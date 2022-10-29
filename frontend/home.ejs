@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าหลัก</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1>เว็บจัดการข้อมูลบุคคล</h1>
+    <nav>
+        <div>
+            <a href="" id='admin'>แอดมิน</a>
+            <% if (title) { %>
+                <a href="/logout" onclick="return confirm('Are you sure you want to logout?')">ออกจากระบบ</a>
+            <% } %>
+        </div>
+        <div>
+            <h2>ยินดีต้อนรับ คุณ <%= title %></h2>
+        </div>
+    </nav>
+    <hr>
+    <script src="home.js"></script>
+</body>
+</html>

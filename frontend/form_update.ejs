@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มอัปเดตข้อมูล</title>
+    <style>
+        * {
+            margin-left: 2rem;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: rgb(35, 10, 226);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>แบบฟอร์มอัปเดตข้อมูล</h1>
+    <a href="/">หน้าหลัก</a>
+    <hr>
+    <form action="/update" method="post">
+        <% for(let i=0; i<result.length; i++){ %>
+            <input type="hidden" name="id" value="<%= result[i].id %>">
+            <input type="text" name="email" value="<%= result[i].email %>">
+            <input type="text" name="name" value="<%= result[i].fullname %>">
+            <input type="text" name="password" value="<%= result[i].password %>">
+        <% } %>
+        <button type="submit">บันทึก</button>
+    </form>
+</body> 
+</html>

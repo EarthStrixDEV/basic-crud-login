@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Site</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1>ระบบจัดการฐานข้อมูล</h1>
+    <a href="/home">หน้าหลัก</a>
+    <a href="/form">แบบฟอร์ม</a>
+    <!-- display data from crud -->
+    <hr>
+    <table>
+        <tr>
+            <th>ลำดับ</th>
+            <th>อีเมล</th>
+            <th>ชื่อ</th>
+            <th>รหัสผ่าน</th>
+            <th>แก้ไข</th>
+            <th>ลบ</th>
+        </tr>
+        <% for(let i=0; i<result.length; i++) { %>
+        <tr>
+            <td><%= i+1 %></td>
+            <td><%= result[i].email %></td>
+            <td><%= result[i].fullname %></td>
+            <td class="password"><%= result[i].password %></td>
+            <td><a href="/edit/<%= result[i].id %>">แก้ไข</a></td>
+            <td><a href="/delete/<%= result[i].id %>" onclick="return confirm('Are you sure you want to delete this user?')">ลบ</a></td>
+        </tr>
+        <% } %>
+    </table>
+    <hr>
+    <small>Technology by NodeJs MySQL</small>
+    <script src="main.js"></script>
+</body>
+</html>
