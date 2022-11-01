@@ -1,4 +1,4 @@
-# basic-crud-login
+# basic-blog-web | basic-login-crud
 **This mini project full-stack web application for case study topic**
 * Basic CRUD System
 * Full Stack Development With NodeJS & MySQL
