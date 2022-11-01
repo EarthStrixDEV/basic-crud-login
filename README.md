@@ -2,7 +2,7 @@
 **This mini project full-stack web application for case study topic**
 * Basic CRUD System
 * Full Stack Development With NodeJS & MySQL
-* Basic Login & Register
+* Basic Login & Register System
 > Front End
 * HTML ,EJS
 * CSS
