@@ -5,22 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>หน้าหลัก</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/grid.css">
 </head>
 <body>
-    <h1>เว็บจัดการข้อมูลบุคคล</h1>
+    <h1>เว็บบทความ</h1>
     <nav>
         <div>
             <a href="" id='admin'>แอดมิน</a>
+            <a href="/postAdmin" id='post_admin'>จัดการระบบโพสต์</a>
             <% if (title) { %>
                 <a href="/logout" onclick="return confirm('Are you sure you want to logout?')">ออกจากระบบ</a>
             <% } %>
+            <a href="/postPage">โพสต์บทความ</a>
         </div>
         <div>
-            <h2>ยินดีต้อนรับ คุณ <%= title %></h2>
+            <h2>ยินดีต้อนรับ คุณ, <%= title %></h2>
         </div>
     </nav>
     <hr>
-    <script src="home.js"></script>
+    <div class="container">
+        <% data.forEach((data) => { %>
+            <div class="grid-item">
+                <h2><%= data.title %></h2>
+                <h4><%= data.author %></h4>
+                <img src="https://images.unsplash.com/photo-1664575601711-67110e027b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" alt="" />
+                <p><%= data.content %></p>      
+                <small><%= data.date %></small>
+            </div>
+        <% }) %>
+    </div>
+    <script src="./js/home.js"></script>
 </body>
 </html>

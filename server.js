@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
-const session = require("express-session");
+const session = require("express-session")
+const multer = require('multer');
 const { render } = require("ejs");
+const { log } = require("console");
 const app = express();
 const port = 7000;
 
@@ -19,9 +21,39 @@ app.use(
 // set middleware ejs
 app.set("view engine", "ejs");
 app.set("views", "./frontend");
+let storage = multer.diskStorage(() => {
+  destination: (req, file, cb) => {
+    cb(null, "./frontend/img/uploads");
+  },
+  filename; (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
 
+let upload = multer({ storage: storage });
+
+const connector = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "user_data",
+});
+
+connector.connect((err) => {
+  if (err) throw err;
+  console.log("Connected!");
+});
+// ! set routes
 app.get("/home", (req, res) => {
-  res.render("home", { title: req.session.username });
+  // get data from post_article table
+  try {
+    connector.query("SELECT * FROM post_article", (err, result) => {
+      if (err) throw err;
+      res.render("home", { data: result ,title: req.session.username });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.get("/", (req, res) => {
@@ -31,6 +63,10 @@ app.get("/", (req, res) => {
 app.get("/registerPage", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/register.html"));
 });
+
+app.get('/post' ,(req ,res) => {
+  res.render("post")
+})
 
 app.get("/admin", (req, res) => {
   try {
@@ -61,17 +97,41 @@ app.get("/edit/:id", (req, res) => {
   }
 });
 
-const connector = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "user_data",
-});
+app.get('/postPage',(req ,res) => {
+  res.render("post")
+})
 
-connector.connect((err) => {
-  if (err) throw err;
-  console.log("Connected!");
-});
+app.get('/postAdmin',(req ,res) => {
+  try {
+    connector.query(`SELECT * FROM post_article`, (err, result) => {
+      if (err) throw err;
+      res.render("post_admin", { data:result });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+
+// ! post system
+app.post('/post',(req ,res) => {
+  const title = req.body.title;
+  const author = req.body.author;
+  const content = req.body.content;
+  const image = req.body.image;
+  const date = req.body.date;
+  try {
+    connector.query(`INSERT INTO post_article (title,author,content,image,date) VALUES (?,?,?,?,?)`,[title,author,content,image,date],(err,result) => {
+      if (err) throw err;
+      console.log(result);
+      res.redirect("/postPage")
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+// ! login system
 
 app.post("/insert", (req, res) => {
     const name = req.body.name;
@@ -127,6 +187,8 @@ app.post("/register", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
+  const image = req.body.image;
+  const date = req.body.date;
 
   try {
     connector.query(

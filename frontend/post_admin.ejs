@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Admin</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <h1>จัดการระบบโพสต์</h1>
+    <hr>
+    <table> 
+        <tr>
+            <th>ลำดับ</th>
+            <th>หัวข้อ</th>
+            <th>ผู้เขียน</th>
+            <th>เนื้อหา</th>
+            <th>เวลาโพสต์</th>
+            <th>แก้ไข</th>
+            <th>ลบ</th>
+        </tr>
+        <tr>
+            <% data.forEach((data) => { %>
+            <td><%= data.id %></td>
+            <td><%= data.title %></td>
+            <td><%= data.author %></td>
+            <td><%= data.content %></td>
+            <td><%= data.date %></td>
+            <td><a href="/edit/<%= data.id %>">แก้ไข</a></td>
+            <td><a href="/delete/<%= data.id %>" onclick="return confirm('Are you sure you want to delete this user?')">ลบ</a></td>
+            <% }) %>
+        </tr>
+    </table>
+</body>
+</html>
