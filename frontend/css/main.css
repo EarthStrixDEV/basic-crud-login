@@ -4,25 +4,45 @@
     box-sizing: border-box;
 }
 
+header {
+    text-align: center;
+    padding-bottom: 0.1rem;
+}
+
 body {
-    margin-left: 3rem;
+    font-family:sans-serif;
 }
 
 h1 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin-top: 0rem;
+    color: #363636;
+}
+
+header h2 {
+    color: #363636;
 }
 
 a {
     text-decoration: none;
     font-size: 1.2rem;
-    color: rgb(35, 10, 226);
+    font-weight: 800;
+    color: #363636;
+    padding: 10px;
 }
 
 a:hover {
-    text-decoration: underline;
+    background-color: #36363628;
+    border-radius: 10px;
+}
+
+a:active {
+    text-decoration: none;
+    background-color: rgb(40, 40, 40);
+    border-radius: 10px;
+    color: rgb(223, 223, 223);
 }
 
 table {

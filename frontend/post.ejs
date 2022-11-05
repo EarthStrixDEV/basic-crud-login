@@ -14,15 +14,15 @@
     <hr>
     <a href="/home">หน้าหลัก</a>
     <section>
-        <form action="/post" method="post">
+        <form action="/post" method="POST" enctype="multipart/form-data">
             <label for="title">หัวข้อ</label>
             <input type="text" name="title" id="title">
             <label for="author">ผู้เขียน</label>
             <input type="text" name="author" id="author">
             <label for="content">เนื้อหา</label>
-            <textarea name="content" id="content" cols="60" rows="15"></textarea>
+            <textarea name="content" id="content" cols="55" rows="12"></textarea>
             <label for="cover">แทรกรูปภาพ</label>
-            <input type="file" name="image" id="image">
+            <input type="file" name="cover" id="image">
             <input type="hidden" name="date" id="date">
             <button type="submit">โพสต์</button>
         </form>

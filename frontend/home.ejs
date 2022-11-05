@@ -9,29 +9,35 @@
     <link rel="stylesheet" href="./css/grid.css">
 </head>
 <body>
-    <h1>เว็บบทความ</h1>
-    <nav>
-        <div>
-            <a href="" id='admin'>แอดมิน</a>
-            <a href="/postAdmin" id='post_admin'>จัดการระบบโพสต์</a>
-            <% if (title) { %>
-                <a href="/logout" onclick="return confirm('Are you sure you want to logout?')">ออกจากระบบ</a>
-            <% } %>
-            <a href="/postPage">โพสต์บทความ</a>
-        </div>
-        <div>
-            <h2>ยินดีต้อนรับ คุณ, <%= title %></h2>
-        </div>
-    </nav>
+    <header>
+        <h1>เว็บบทความ</h1>
+        <nav>
+            <div>
+                <% if (title) { %>
+                    <a href="/postPage">โพสต์บทความ</a>
+                    <a href="" id='admin'>แอดมิน</a>
+                    <a href="" id='post_admin'>จัดการระบบโพสต์</a>
+                    <a href="/logout" onclick="return confirm('Are you sure you want to logout?')">ออกจากระบบ</a>
+                <% } else { %>
+                    <a href="/">ล็อกอิน</a>
+                <% } %>
+            </div>
+            <div>
+                <h2>ยินดีต้อนรับ คุณ, <%= title %></h2>
+            </div>
+        </nav>
+    </header>
     <hr>
     <div class="container">
         <% data.forEach((data) => { %>
             <div class="grid-item">
-                <h2><%= data.title %></h2>
-                <h4><%= data.author %></h4>
-                <img src="https://images.unsplash.com/photo-1664575601711-67110e027b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80" alt="" />
-                <p><%= data.content %></p>      
-                <small><%= data.date %></small>
+                <div class="grid-item-container">
+                    <h2><%= data.title %></h2>
+                    <h4><%= data.author %></h4>
+                    <img src="./img/uploads/<%= data.image %>" alt="" />
+                    <p><%= data.content %></p>      
+                    <small><%= data.date %></small>
+                </div>
             </div>
         <% }) %>
     </div>

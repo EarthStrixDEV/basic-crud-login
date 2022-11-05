@@ -10,7 +10,7 @@ const port = 7000;
 
 app.use(express.static(path.join(__dirname, "./frontend")));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended:true }));
 app.use(
   session({
     secret: "secret",
@@ -18,20 +18,23 @@ app.use(
     saveUninitialized: true,
   })
 );
-// set middleware ejs
+
+// ! set middleware ejs
 app.set("view engine", "ejs");
 app.set("views", "./frontend");
-let storage = multer.diskStorage(() => {
+
+// ! set multer module
+let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./frontend/img/uploads");
+    cb(null, "./frontend/img/uploads")
   },
-  filename; (req, file, cb) => {
-    cb(null, file.originalname);
+  filename: (req, file, cb) => {
+    cb(null, Date.now()+".jpg")
   }
 });
 
-let upload = multer({ storage: storage });
-
+var upload = multer({ storage: storage });
+// ! sql connection
 const connector = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -41,15 +44,19 @@ const connector = mysql.createConnection({
 
 connector.connect((err) => {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Database connected!");
 });
-// ! set routes
+
+// ! set routes page
 app.get("/home", (req, res) => {
   // get data from post_article table
   try {
     connector.query("SELECT * FROM post_article", (err, result) => {
       if (err) throw err;
-      res.render("home", { data: result ,title: req.session.username });
+      res.render("home", {
+        title: req.session.username,
+        data: result,
+      });
     });
   } catch (error) {
     console.log(error);
@@ -63,10 +70,6 @@ app.get("/", (req, res) => {
 app.get("/registerPage", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/register.html"));
 });
-
-app.get('/post' ,(req ,res) => {
-  res.render("post")
-})
 
 app.get("/admin", (req, res) => {
   try {
@@ -97,6 +100,25 @@ app.get("/edit/:id", (req, res) => {
   }
 });
 
+// ! post system
+app.post('/post' ,upload.single("cover") ,(req ,res) => {
+  const title = req.body.title;
+  const author = req.body.author;
+  const content = req.body.content;
+  const image = req.file.filename;
+  const date = req.body.date;
+  const sql = `INSERT INTO post_article (title, author, content, image, date) VALUES ('${title}', '${author}', '${content}', '${image}', '${date}')`;
+  try {
+    connector.query(sql, (err, result) => {
+      if (err) throw err;
+      res.redirect('/home');
+      console.log(image);
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 app.get('/postPage',(req ,res) => {
   res.render("post")
 })
@@ -112,24 +134,18 @@ app.get('/postAdmin',(req ,res) => {
   }
 })
 
-
-// ! post system
-app.post('/post',(req ,res) => {
-  const title = req.body.title;
-  const author = req.body.author;
-  const content = req.body.content;
-  const image = req.body.image;
-  const date = req.body.date;
+app.get("/delete/:id", (req, res) => {
+  const id = req.params.id;
   try {
-    connector.query(`INSERT INTO post_article (title,author,content,image,date) VALUES (?,?,?,?,?)`,[title,author,content,image,date],(err,result) => {
+    connector.query(`DELETE FROM post_article WHERE id = ${ id }`, (err, result) => {
       if (err) throw err;
+      res.redirect('/postAdmin')
       console.log(result);
-      res.redirect("/postPage")
-    })
+    });
   } catch (error) {
     console.log(error);
   }
-})
+});
 
 // ! login system
 
@@ -142,7 +158,7 @@ app.post("/insert", (req, res) => {
       `INSERT INTO users (email, fullname, password) VALUES ('${email}', '${name}', '${password}')`,
       (err, result) => {
           if (err) { throw err; }
-          res.redirect("/");
+          res.redirect("/home");
         console.log(result);
       }
     );
@@ -161,7 +177,7 @@ app.post("/update", (req, res) => {
       `UPDATE users SET email = '${ email }', fullname = '${ name }', password = '${ password }' WHERE id = ${ id }`,
       (err, result) => {
         if (err) throw err;
-        res.redirect("/");
+        res.redirect("/home");
         console.log(result);
       }
     );
@@ -175,7 +191,7 @@ app.get("/delete/:id", (req, res) => {
   try {
     connector.query(`DELETE FROM users WHERE id = ${ id }`, (err, result) => {
       if (err) throw err;
-      res.redirect("/");
+      res.redirect("/home");
       console.log(result);
     });
   } catch (error) {
@@ -187,15 +203,13 @@ app.post("/register", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
-  const image = req.body.image;
-  const date = req.body.date;
 
   try {
     connector.query(
       `INSERT INTO users (email, fullname, password) VALUES ('${ email }', '${ name }', '${ password }')`,
       (err, result) => {
         if (err) throw err;
-        res.redirect("/");
+        res.redirect("/home");
         console.log(result);
       }
     );
@@ -220,13 +234,19 @@ app.post('/login', (req, res) => {
   });
   } catch (error) {
     console.log(error);
+    res.send(error)
   }
 });
 
 app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
+  if (req.session.destroy()) {
+    res.redirect("/");
+  } else {
+    res.send("Error");
+  }
 });
+
+// ! app listening
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
