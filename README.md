@@ -12,4 +12,4 @@
 * Express JS
 * MySQL (PHPMyAdmin)
 
-**My Project 90% Use Thai Language!!
+**My Project 90% Use Thai Language!!**
