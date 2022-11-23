@@ -11,3 +11,5 @@
 * Node JS
 * Express JS
 * MySQL (PHPMyAdmin)
+
+**My Project 90% Use Thai Language!!**
