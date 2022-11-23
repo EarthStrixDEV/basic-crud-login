@@ -28,6 +28,7 @@
         </nav>
     </header>
     <hr>
+    <% if (title) { %>
     <div class="container">
         <% data.forEach((data) => { %>
             <div class="grid-item">
@@ -41,6 +42,12 @@
             </div>
         <% }) %>
     </div>
+    <% } else { %>
+        <div class="welcome_session">
+            <h2>ยินดีต้อนรับสู่ เว็บบทความ ที่กากที่สุด</h2>
+            <small>พัฒนาโดยโปรแกรมเมอร์มือสมัครเล่น EarthStrix</small>
+        </div>
+    <% } %>
     <script src="./js/home.js"></script>
 </body>
 </html>
